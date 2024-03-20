@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -14,10 +15,14 @@
  * @var \App\View\AppView $this
  */
 
+use Cake\Utility\Inflector;
+use Cake\Utility\Text;
+
 $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,14 +38,19 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
+
 <body>
     <nav class="top-nav">
         <div class="top-nav-title">
             <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
         </div>
         <div class="top-nav-links">
-            <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/">Documentation</a>
-            <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
+            <?php foreach (['posts', 'users'] as $controller) : ?>
+                <?= $this->Html->link(
+                    Inflector::humanize($controller),
+                    ['controller' => $controller]
+                ); ?>
+            <?php endforeach; ?>
         </div>
     </nav>
     <main class="main">
@@ -52,4 +62,5 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <footer>
     </footer>
 </body>
+
 </html>
