@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -45,8 +46,14 @@ class PostsController extends AppController
     public function add()
     {
         $post = $this->Posts->newEmptyEntity();
+
+        $this->Authorization->authorize($post);
+
         if ($this->request->is('post')) {
             $post = $this->Posts->patchEntity($post, $this->request->getData());
+
+            $post->user_id = $this->request->getAttribute('identity')->getIdentifier();
+
             if ($this->Posts->save($post)) {
                 $this->Flash->success(__('The post has been saved.'));
 
@@ -68,8 +75,19 @@ class PostsController extends AppController
     public function edit($id = null)
     {
         $post = $this->Posts->get($id, contain: []);
+
+        $this->Authorization->authorize($post);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $post = $this->Posts->patchEntity($post, $this->request->getData());
+            $post = $this->Posts->patchEntity(
+                $post,
+                $this->request->getData(),
+                [
+                    // Added: Disable modification of user_id.
+                    'accessibleFields' => ['user_id' => false]
+                ]
+            );
+
             if ($this->Posts->save($post)) {
                 $this->Flash->success(__('The post has been saved.'));
 
@@ -92,6 +110,9 @@ class PostsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $post = $this->Posts->get($id);
+
+        $this->Authorization->authorize($post);
+
         if ($this->Posts->delete($post)) {
             $this->Flash->success(__('The post has been deleted.'));
         } else {

@@ -1,8 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use ArrayObject;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -50,6 +54,18 @@ class UsersTable extends Table
         $this->hasMany('Posts', [
             'foreignKey' => 'user_id',
         ]);
+    }
+
+    public function beforeSave(
+        EventInterface $event,
+        EntityInterface $entity,
+        ArrayObject $options
+    ) {
+        if ($entity->hasValue('new_password')) {
+            $entity->password = $entity->new_password;
+
+            unset($entity['new_password']);
+        }
     }
 
     /**

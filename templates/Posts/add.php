@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Post $post
@@ -18,9 +19,8 @@
             <fieldset>
                 <legend><?= __('Add Post') ?></legend>
                 <?php
-                    echo $this->Form->control('user_id', ['options' => $users]);
-                    echo $this->Form->control('title');
-                    echo $this->Form->control('body');
+                echo $this->Form->control('title');
+                echo $this->Form->control('body');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

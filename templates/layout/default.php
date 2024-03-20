@@ -45,12 +45,26 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
         </div>
         <div class="top-nav-links">
+            <?= $this->getRequest()->getAttribute('identity') ?
+                "Logged in as: " . $this->getRequest()->getAttribute('identity')
+                    ->getOriginalData()['email'] :
+                ''; ?>
+            <?= $this->getRequest()->getAttribute('identity') ?
+                $this->Html->link(
+                    'Logout',
+                    ['controller' => 'Users', 'action' => 'logout']
+                ) :
+                $this->Html->link(
+                    'Login',
+                    ['controller' => 'Users', 'action' => 'login']
+                ); ?>
             <?php foreach (['posts', 'users'] as $controller) : ?>
                 <?= $this->Html->link(
                     Inflector::humanize($controller),
                     ['controller' => $controller]
                 ); ?>
             <?php endforeach; ?>
+
         </div>
     </nav>
     <main class="main">
