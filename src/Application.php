@@ -41,6 +41,7 @@ use Authorization\AuthorizationServiceInterface;
 use Authorization\AuthorizationServiceProviderInterface;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Policy\OrmResolver;
+use Cake\Http\ServerRequest;
 
 /**
  * Application setup class.
@@ -104,13 +105,31 @@ implements
             // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
             ->add(new BodyParserMiddleware())
             ->add(new AuthenticationMiddleware($this))
-            ->add(new AuthorizationMiddleware($this))
+            ->add(new AuthorizationMiddleware($this));
 
-            // Cross Site Request Forgery (CSRF) Protection Middleware
-            // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
-            ->add(new CsrfProtectionMiddleware([
-                'httponly' => true,
-            ]));
+        // Cross Site Request Forgery (CSRF) Protection Middleware
+        // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
+        // ->add(new CsrfProtectionMiddleware([
+        //     'httponly' => true,
+        // ]));
+
+        $csrf = new CsrfProtectionMiddleware([
+            'httponly' => true,
+        ]);
+
+        // Token check will be skipped when callback returns `true`.
+        $csrf->skipCheckCallback(function (ServerRequest $request) {
+            // Skip token check for API URLs.
+            if (
+                $request->getParam('action') === 'ajax'
+                && $request->getHeaderLine('X-My-Custom-Header') === 'hijames'
+            ) {
+                return true;
+            }
+        });
+
+        // Ensure routing middleware is added to the queue before CSRF protection middleware.
+        $middlewareQueue->add($csrf);
 
         return $middlewareQueue;
     }
@@ -133,24 +152,46 @@ implements
             'queryParam' => 'redirect',
         ]);
 
-        // Load identifiers, ensure we check email and password fields
-        $authenticationService->loadIdentifier('Authentication.Password', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password',
-            ],
-        ]);
+        /**
+         * @var \Cake\Http\ServerRequest $request
+         */
+        if ($request->is('ajax')) {
+            $authenticationService->loadIdentifier('Authentication.Token', [
+                'dataField' => 'token',
+                'tokenField' => 'token',
+                'resolver' => [
+                    'className' => 'Authentication.Orm',
+                    'userModel' => 'Users',
+                    'finder' => 'token', // default: 'all'
+                ],
+                'hashAlgorithm' => 'sha256'
+            ]);
 
-        // Load the authenticators, you want session first
-        $authenticationService->loadAuthenticator('Authentication.Session');
-        // Configure form data check to pick email and password
-        $authenticationService->loadAuthenticator('Authentication.Form', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password',
-            ],
-            'loginUrl' => Router::url('/users/login'),
-        ]);
+            $authenticationService->loadAuthenticator('Authentication.Token', [
+                'queryParam' => 'token',
+                'header' => 'Authorization',
+                'tokenPrefix' => 'Token'
+            ]);
+        } else {
+            // Load identifiers, ensure we check email and password fields
+            $authenticationService->loadIdentifier('Authentication.Password', [
+                'fields' => [
+                    'username' => 'email',
+                    'password' => 'password',
+                ],
+            ]);
+
+            // Load the authenticators, you want session first
+            $authenticationService->loadAuthenticator('Authentication.Session');
+            // Configure form data check to pick email and password
+            $authenticationService->loadAuthenticator('Authentication.Form', [
+                'fields' => [
+                    'username' => 'email',
+                    'password' => 'password',
+                ],
+                'loginUrl' => Router::url('/users/login'),
+            ]);
+        }
 
         return $authenticationService;
     }

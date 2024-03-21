@@ -69,6 +69,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </nav>
     <main class="main">
         <div class="container">
+            <?= $this->Html->link('Ajax', ['controller' => 'Posts', 'action' => 'ajax']); ?>
             <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
         </div>

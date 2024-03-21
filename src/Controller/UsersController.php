@@ -103,7 +103,11 @@ class UsersController extends AppController
         $this->Authorization->authorize($user);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData(), [
-                'accessibleFields' => ['new_password' => true]
+                'accessibleFields' => [
+                    'new_password' => true,
+                    'new_token' => true,
+                    'token_active' => true,
+                ]
             ]);
 
             if ($this->Users->save($user)) {

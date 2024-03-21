@@ -35,6 +35,12 @@ use Cake\Validation\Validator;
  */
 class UsersTable extends Table
 {
+
+    public function findToken(SelectQuery $query): SelectQuery
+    {
+        return $query->where(['token_active' => true])
+            ->whereNotNull(['token']);
+    }
     /**
      * Initialize method
      *
@@ -65,6 +71,12 @@ class UsersTable extends Table
             $entity->password = $entity->new_password;
 
             unset($entity['new_password']);
+        }
+
+        if (strlen($entity->new_token) > 0) {
+            $entity->token = $entity->new_token;
+
+            unset($entity['new_token']);
         }
     }
 

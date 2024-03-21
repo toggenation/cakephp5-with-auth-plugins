@@ -121,4 +121,25 @@ class PostsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function ajax()
+    {
+        $this->Authorization->skipAuthorization();
+
+        if ($this->request->is('ajax')) {
+
+            $data = [
+                'email' => $this->getRequest()
+                    ->getAttribute('identity')
+                    ->getOriginalData()['email'],
+                'method' => $this->request->getMethod()
+            ];
+
+            $this->viewBuilder()
+                ->setClassName('Json')
+                ->setOption('serialize', 'data');
+
+            $this->set(compact('data'));
+        }
+    }
 }
