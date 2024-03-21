@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Chronos\Chronos;
+use Cake\Http\Cookie\Cookie;
+
 /**
  * Posts Controller
  *
@@ -124,15 +127,22 @@ class PostsController extends AppController
 
     public function ajax()
     {
+
+
+
+
+
         $this->Authorization->skipAuthorization();
 
         if ($this->request->is('ajax')) {
 
             $data = [
+                'cookie' => $this->getRequest()->getCookie('james'),
                 'email' => $this->getRequest()
                     ->getAttribute('identity')
                     ->getOriginalData()['email'],
-                'method' => $this->request->getMethod()
+                'method' => $this->request->getMethod(),
+
             ];
 
             $this->viewBuilder()
@@ -140,6 +150,17 @@ class PostsController extends AppController
                 ->setOption('serialize', 'data');
 
             $this->set(compact('data'));
+        } else {
+            $cookieData = json_encode([
+                'a' => 'heap',
+                'of' => 'data',
+                'in' => 'cookie',
+                'random' => uniqid('hi-')
+            ]);
+
+            $cookie = new Cookie('james', $cookieData, Chronos::now()->addYears(1), '/posts/ajax');
+
+            $this->setResponse($this->getResponse()->withCookie($cookie));
         }
     }
 

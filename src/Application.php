@@ -44,7 +44,9 @@ use Authorization\Exception\ForbiddenException;
 use Authorization\Exception\MissingIdentityException;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Policy\OrmResolver;
+use Cake\Http\Middleware\EncryptedCookieMiddleware;
 use Cake\Http\ServerRequest;
+use Cake\I18n\Middleware\LocaleSelectorMiddleware;
 
 /**
  * Application setup class.
@@ -102,11 +104,18 @@ implements
             // caching in production could improve performance.
             // See https://github.com/CakeDC/cakephp-cached-routing
             ->add(new RoutingMiddleware($this))
+            // Add middleware and set the valid locales
+            ->add(new LocaleSelectorMiddleware(['en_US', 'en_AU']));
+        // To accept any locale header value
+        //  $middlewareQueue->add(new LocaleSelectorMiddleware(['*']));
 
-            // Parse various types of encoded request bodies so that they are
-            // available as array through $request->getData()
-            // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
-            ->add(new BodyParserMiddleware())
+
+
+
+        // Parse various types of encoded request bodies so that they are
+        // available as array through $request->getData()
+        // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
+        $middlewareQueue->add(new BodyParserMiddleware())
             ->add(new AuthenticationMiddleware($this))
             ->add(new AuthorizationMiddleware($this,   ['unauthorizedHandler' => [
                 'className' => CustomRedirectHandler::class,
@@ -118,11 +127,6 @@ implements
                 ],
             ],]));
 
-        // Cross Site Request Forgery (CSRF) Protection Middleware
-        // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
-        // ->add(new CsrfProtectionMiddleware([
-        //     'httponly' => true,
-        // ]));
 
         $csrf = new CsrfProtectionMiddleware([
             'httponly' => true,
@@ -141,6 +145,14 @@ implements
 
         // Ensure routing middleware is added to the queue before CSRF protection middleware.
         $middlewareQueue->add($csrf);
+
+        $cookies = new EncryptedCookieMiddleware(
+            // Names of cookies to protect
+            ['james'],
+            Configure::read('Security.cookieKey')
+        );
+
+        $middlewareQueue->add($cookies);
 
         return $middlewareQueue;
     }
