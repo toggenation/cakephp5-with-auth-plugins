@@ -31,7 +31,7 @@ curl -v -X POST \
 ## Passwords
 
 user | pass | token
------- | ---------- | 
+------ | ---------- | -----
 test@example.com | 123 | aaaa
 test1@example.com | 456 | bbbb
 
