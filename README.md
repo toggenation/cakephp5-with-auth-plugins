@@ -30,10 +30,10 @@ curl -v -X POST \
 
 ## Passwords
 
-user | pass
------- | ----------------
-test@example.com | 123
-test1@example.com | 456
+user | pass | token
+------ | ---------- | 
+test@example.com | 123 | aaaa
+test1@example.com | 456 | bbbb
 
 Change default passwords in `config/Seeds/UsersSeed.php`
 
