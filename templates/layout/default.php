@@ -64,11 +64,11 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                     ['controller' => $controller]
                 ); ?>
 
-                <?= $this->Html->link('Ajax', ['controller' => 'Posts', 'action' => 'ajax']); ?>
 
-                <?= $this->Html->link('Test Redirect', ['controller' => 'Posts', 'action' => 'testRedirect']); ?>
             <?php endforeach; ?>
+            <?= $this->Html->link('Ajax', ['controller' => 'Posts', 'action' => 'ajax']); ?>
 
+            <?= $this->Html->link('Test Redirect', ['controller' => 'Posts', 'action' => 'testRedirect']); ?>
         </div>
     </nav>
     <main class="main">
