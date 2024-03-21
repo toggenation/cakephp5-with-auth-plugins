@@ -54,7 +54,6 @@ composer install
         'default' => [
             'driver' => Sqlite::class,
             'database' => ROOT . DS . 'token',
-
         ],
 ```
 
