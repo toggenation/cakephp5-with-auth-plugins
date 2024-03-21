@@ -1,53 +1,54 @@
-# CakePHP Application Skeleton
+# CakePHP 5 
 
-![Build Status](https://github.com/cakephp/app/actions/workflows/ci.yml/badge.svg?branch=master)
-[![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
-[![PHPStan](https://img.shields.io/badge/PHPStan-level%207-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
+This repo is the result of following the CMS Tutorial
 
-A skeleton for creating applications with [CakePHP](https://cakephp.org) 5.x.
+https://book.cakephp.org/5/en/tutorials-and-examples/cms/installation.html 
 
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
+Authentication and Authorization Plugins
 
-## Installation
+Migrations and Seeds to create schema
 
-1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
+Policy files and use of the `BeforePolicyInterface` (see src/Policy/UserPolicy.php)
 
-If Composer is installed globally, run
+Posts & Users Table (Not Articles and Tags tables)
 
-```bash
-composer create-project --prefer-dist cakephp/app
+Example of POST and GET Ajax request using Token Authentication http://localhost:8765/posts/ajax using a token stored hashed in the database. View the ajax code in `webroot/js/ajax.js`
+
+Check `src/Application.php` for example to bypass CSRF Middleware code for clients that send POST with no prior GET request
+
+Use curl to test POST
+
+```
+curl -v -X POST \
+    -H "Content-Type: application/json" \
+    -H 'X-Requested-With: XMLHttpRequest' \
+    -H 'Authorization: Token ssss' \
+    -H 'Accept: application/json' \
+    -H 'X-My-Custom-Header: hijames' \
+    -d @content.json \
+    http://localhost:8765/posts/ajax
 ```
 
-In case you want to use a custom app dir name (e.g. `/myapp/`):
 
-```bash
-composer create-project --prefer-dist cakephp/app myapp
+Example of `CustomRedirectHandler` http://localhost:8765/posts/test-redirect
+
+user | pass
+------ | ----------------
+test@example.com | 123
+test1@example.com | 456
+
+Change default passwords in `config/Seeds/UsersSeed.php`
+
+```
+git clone [this repo]
+
+composer install
+
+bin/cake migrations migrate
+
+# Warning seeds will truncate the posts and users table prior to inserting their records
+bin/cake migrations seed
+
+bin/cake server
 ```
 
-You can now either use your machine's webserver to view the default home page, or start
-up the built-in webserver with:
-
-```bash
-bin/cake server -p 8765
-```
-
-Then visit `http://localhost:8765` to see the welcome page.
-
-## Update
-
-Since this skeleton is a starting point for your application and various files
-would have been modified as per your needs, there isn't a way to provide
-automated upgrades, so you have to do any updates manually.
-
-## Configuration
-
-Read and edit the environment specific `config/app_local.php` and set up the
-`'Datasources'` and any other configuration relevant for your application.
-Other environment agnostic settings can be changed in `config/app.php`.
-
-## Layout
-
-The app skeleton uses [Milligram](https://milligram.io/) (v1.3) minimalist CSS
-framework by default. You can, however, replace it with any other library or
-custom styles.

@@ -24,6 +24,10 @@ class PostPolicy
         return true;
     }
 
+    public function canTestRedirect(IdentityInterface $user, Post $post)
+    {
+        return false;
+    }
     /**
      * Check if $user can edit Post
      *

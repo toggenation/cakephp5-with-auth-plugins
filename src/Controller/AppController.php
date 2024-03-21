@@ -60,9 +60,9 @@ class AppController extends Controller
         parent::beforeFilter($event);
         // for all controllers in our application, make index and view
         // actions public, skipping the authentication check
-        $this->Authentication->addUnauthenticatedActions(['index', 'view']);
+        $this->Authentication->addUnauthenticatedActions(['index', 'view', 'unauth']);
 
-        if (in_array($this->request->getParam('action'), ['index', 'view'])) {
+        if (in_array($this->request->getParam('action'), ['index', 'view', 'unauth'])) {
             $this->Authorization->skipAuthorization();
         }
     }

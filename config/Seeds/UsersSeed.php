@@ -27,13 +27,13 @@ class UsersSeed extends AbstractSeed
             [
                 [
                     'email' => 'test@example.com',
-                    'password' => (new DefaultPasswordHasher())->hash('123'),
+                    'password' => $this->_pass('123'),
                     'created' => Chronos::now(),
                     'modified' => Chronos::now(),
                 ],
                 [
                     'email' => 'test2@example.com',
-                    'password' => (new DefaultPasswordHasher())->hash('456'),
+                    'password' => $this->_pass('456'),
                     'created' => Chronos::now(),
                     'modified' => Chronos::now(),
                 ]
@@ -42,5 +42,10 @@ class UsersSeed extends AbstractSeed
         $table = $this->table('users');
         $table->truncate();
         $table->insert($data)->save();
+    }
+
+    protected function _pass($pass)
+    {
+        return (new DefaultPasswordHasher())->hash($pass);
     }
 }

@@ -142,4 +142,13 @@ class PostsController extends AppController
             $this->set(compact('data'));
         }
     }
+
+    public function testRedirect()
+    {
+        $this->Authorization->authorize($this->Posts->newEmptyEntity());
+    }
+
+    public function unauth()
+    {
+    }
 }

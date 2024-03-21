@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Middleware\UnauthorizedHandler\CustomRedirectHandler;
 use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
@@ -39,6 +40,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Authorization\AuthorizationService;
 use Authorization\AuthorizationServiceInterface;
 use Authorization\AuthorizationServiceProviderInterface;
+use Authorization\Exception\ForbiddenException;
+use Authorization\Exception\MissingIdentityException;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Policy\OrmResolver;
 use Cake\Http\ServerRequest;
@@ -105,7 +108,15 @@ implements
             // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
             ->add(new BodyParserMiddleware())
             ->add(new AuthenticationMiddleware($this))
-            ->add(new AuthorizationMiddleware($this));
+            ->add(new AuthorizationMiddleware($this,   ['unauthorizedHandler' => [
+                'className' => CustomRedirectHandler::class,
+                'url' => ['controller' => 'Posts', 'action' => 'unauth'],
+                'queryParam' => 'redirectUrl',
+                'exceptions' => [
+                    MissingIdentityException::class,
+                    ForbiddenException::class,
+                ],
+            ],]));
 
         // Cross Site Request Forgery (CSRF) Protection Middleware
         // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
