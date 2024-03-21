@@ -1,6 +1,8 @@
 # CakePHP 5 
 
-This repo is the result of loosely following the CMS Tutorial at
+This repo is the result of loosely following the CMS Tutorial at CakePHP.org
+
+It contains an example of using Token Authentication to authenticate Ajax requests
 
 https://book.cakephp.org/5/en/tutorials-and-examples/cms/installation.html 
 
@@ -43,9 +45,6 @@ Change default passwords in `config/Seeds/UsersSeed.php` and then re-run `bin/ca
 git clone https://github.com/toggenation/cakephp5-with-auth-plugins
 
 composer install
-
-
-
 ```
 
 ```
@@ -57,9 +56,7 @@ composer install
             'database' => ROOT . DS . 'token',
 
         ],
-
 ```
-
 
 ```
 bin/cake migrations migrate
