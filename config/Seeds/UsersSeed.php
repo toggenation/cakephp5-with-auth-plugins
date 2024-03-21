@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\Chronos\Chronos;
+use Cake\Utility\Security;
 use Migrations\AbstractSeed;
 
 /**
@@ -30,12 +31,16 @@ class UsersSeed extends AbstractSeed
                     'password' => $this->_pass('123'),
                     'created' => Chronos::now(),
                     'modified' => Chronos::now(),
+                    'token' => Security::hash('aaaa', 'sha256'),
+                    'token_active' => true
                 ],
                 [
                     'email' => 'test2@example.com',
                     'password' => $this->_pass('456'),
                     'created' => Chronos::now(),
                     'modified' => Chronos::now(),
+                    'token' => Security::hash('bbbb', 'sha256'),
+                    'token_active' => true,
                 ]
             ];
 

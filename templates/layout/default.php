@@ -63,15 +63,16 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                     Inflector::humanize($controller),
                     ['controller' => $controller]
                 ); ?>
+
+                <?= $this->Html->link('Ajax', ['controller' => 'Posts', 'action' => 'ajax']); ?>
+
+                <?= $this->Html->link('Test Redirect', ['controller' => 'Posts', 'action' => 'testRedirect']); ?>
             <?php endforeach; ?>
 
         </div>
     </nav>
     <main class="main">
         <div class="container">
-            <?= $this->Html->link('Ajax', ['controller' => 'Posts', 'action' => 'ajax']); ?>
-
-            <?= $this->Html->link('Test Redirect', ['controller' => 'Posts', 'action' => 'testRedirect']); ?>
             <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
         </div>

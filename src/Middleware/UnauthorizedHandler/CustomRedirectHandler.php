@@ -18,7 +18,12 @@ class CustomRedirectHandler extends CakeRedirectHandler
          * @var \Cake\Http\ServerRequest $request
          */
         $response = parent::handle($exception, $request, $options);
-        $request->getFlash()->error('You are not authorized to access that location');
+
+        $request->getFlash()->set('You are not authorized to access the location: ', [
+            'element' => 'denied',
+            'params' => ['redirected_from' => $request->getRequestTarget()]
+        ]);
+
         return $response;
     }
 }

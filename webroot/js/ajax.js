@@ -4,7 +4,7 @@ function assign(data) {
 }
 
 async function get() {
-    const res = await fetch('/posts/ajax?token=tttt&method=get', {
+    const res = await fetch('/posts/ajax?token=bbbb&method=get', {
         method: 'get',
         headers: {
             'X-Requested-With': 'XMLHttpRequest',
@@ -24,7 +24,7 @@ async function post() {
         method: 'post',
         headers: {
             'X-Requested-With': 'XMLHttpRequest',
-            'Authorization': 'Token rrrr',
+            'Authorization': 'Token aaaa',
             'Accept': 'application/json',
             'X-CSRF-Token': csrfToken
         }
