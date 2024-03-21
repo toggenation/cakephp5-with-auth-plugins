@@ -1,6 +1,6 @@
 # CakePHP 5 
 
-This repo is the result of following the CMS Tutorial at
+This repo is the result of loosely following the CMS Tutorial at
 
 https://book.cakephp.org/5/en/tutorials-and-examples/cms/installation.html 
 
