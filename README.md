@@ -35,7 +35,7 @@ user | pass | token
 test@example.com | 123 | aaaa
 test1@example.com | 456 | bbbb
 
-Change default passwords in `config/Seeds/UsersSeed.php`
+Change default passwords in `config/Seeds/UsersSeed.php` and then re-run `bin/cake migrations seed`
 
 
 ## Installation 
