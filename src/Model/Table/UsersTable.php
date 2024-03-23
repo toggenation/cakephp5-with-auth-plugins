@@ -73,7 +73,7 @@ class UsersTable extends Table
             unset($entity['new_password']);
         }
 
-        if ($entity->has('new_token')) {
+        if ($entity->hasValue('new_token')) {
             $entity->token = $entity->new_token;
 
             unset($entity['new_token']);

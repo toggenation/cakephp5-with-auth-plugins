@@ -26,6 +26,11 @@ return [
      */
     'Security' => [
         'salt' => env('SECURITY_SALT', '__SALT__'),
+        // after running composer install
+        // remove the slashes and then execute
+        // composer run post-install-cmd
+        'cookieKey' => '\_\_SALT\_\_',
+        'encryptedCookies' => ['form'],
     ],
 
     /*

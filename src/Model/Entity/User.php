@@ -45,6 +45,7 @@ class User extends Entity
      */
     protected array $_hidden = [
         'password',
+        'token'
     ];
 
     protected function _setPassword(string $password): ?string

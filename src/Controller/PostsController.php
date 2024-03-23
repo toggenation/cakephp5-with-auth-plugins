@@ -127,15 +127,9 @@ class PostsController extends AppController
 
     public function ajax()
     {
-
-
-
-
-
         $this->Authorization->skipAuthorization();
 
         if ($this->request->is('ajax')) {
-
             $data = [
                 'cookie' => $this->getRequest()->getCookie('james'),
                 'email' => $this->getRequest()
