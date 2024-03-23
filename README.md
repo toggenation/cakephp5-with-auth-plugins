@@ -44,6 +44,8 @@ Change default passwords in `config/Seeds/UsersSeed.php` and then re-run `bin/ca
 ```
 git clone https://github.com/toggenation/cakephp5-with-auth-plugins
 
+cd cakephp5-with-auth-plugins/
+
 composer install
 ```
 
@@ -62,12 +64,9 @@ composer install
         'cookieKey' => '__SALT__',
         'encryptedCookies' => ['form'],
         //...
-
-
 ```
 
 ```sh
-
 # run composer to replace the __SALT__ token
 
 composer run post-install-cmd
