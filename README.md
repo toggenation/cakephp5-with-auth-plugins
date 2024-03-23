@@ -47,17 +47,31 @@ git clone https://github.com/toggenation/cakephp5-with-auth-plugins
 composer install
 ```
 
-```
-# Modify config/app_local.php to use Sqlite
+```php
+# Modify config/app_local.php to use Sqlite and have the 
+# encrypted cookie middleware
 
   'Datasources' => [
         'default' => [
             'driver' => Sqlite::class,
             'database' => ROOT . DS . 'token',
         ],
-```
+
+# Add the settings for Encrypted Cookie Middleware
+ 'Security' => [
+        'cookieKey' => '__SALT__',
+        'encryptedCookies' => ['form'],
+        //...
+
 
 ```
+
+```sh
+
+# run composer to replace the __SALT__ token
+
+composer run post-install-cmd
+
 bin/cake migrations migrate
 
 # Warning seeds will truncate the posts and users table prior to inserting their records
