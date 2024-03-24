@@ -1,13 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\Entity\Post;
 use Cake\Form\Form;
 use Cake\Http\Cookie\Cookie;
-use stdClass;
 
 /**
  * Posts Controller
@@ -37,7 +34,7 @@ class PostsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $post = $this->Posts->get($id, contain: ['Users']);
         $this->set(compact('post'));
@@ -77,7 +74,7 @@ class PostsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $post = $this->Posts->get($id, contain: []);
 
@@ -89,7 +86,7 @@ class PostsController extends AppController
                 $this->request->getData(),
                 [
                     // Added: Disable modification of user_id.
-                    'accessibleFields' => ['user_id' => false]
+                    'accessibleFields' => ['user_id' => false],
                 ]
             );
 
@@ -111,7 +108,7 @@ class PostsController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $post = $this->Posts->get($id);
@@ -151,7 +148,7 @@ class PostsController extends AppController
                 'a' => 'heap',
                 'of' => 'data',
                 'in' => 'cookie',
-                'random' => uniqid('hi-')
+                'random' => uniqid('hi-'),
             ]);
 
             $cookie = new Cookie('james', $cookieData, Chronos::now()->addYears(1), '/posts/ajax');
@@ -173,8 +170,7 @@ class PostsController extends AppController
     {
         $this->Authorization->authorize($this->Posts->newEmptyEntity());
 
-        if ($this->request->is("POST")) {
-
+        if ($this->request->is('POST')) {
             $data = $this->request->getData();
 
             $cookie = new Cookie('form', $data);

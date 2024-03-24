@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Policy;
@@ -19,7 +18,7 @@ class PostPolicy
      * @param \App\Model\Entity\Post $post
      * @return bool
      */
-    public function canAdd(IdentityInterface $user, Post $post)
+    public function canAdd(IdentityInterface $user, Post $post): bool
     {
         return true;
     }
@@ -33,6 +32,7 @@ class PostPolicy
     {
         return false;
     }
+
     /**
      * Check if $user can edit Post
      *
@@ -40,7 +40,7 @@ class PostPolicy
      * @param \App\Model\Entity\Post $post
      * @return bool
      */
-    public function canEdit(IdentityInterface $user, Post $post)
+    public function canEdit(IdentityInterface $user, Post $post): bool
     {
         return $this->isAuthor($user, $post);
     }
@@ -52,6 +52,7 @@ class PostPolicy
          */
         return $post->user_id === $user->getIdentifier();
     }
+
     /**
      * Check if $user can delete Post
      *
@@ -59,7 +60,7 @@ class PostPolicy
      * @param \App\Model\Entity\Post $post
      * @return bool
      */
-    public function canDelete(IdentityInterface $user, Post $post)
+    public function canDelete(IdentityInterface $user, Post $post): bool
     {
         return $this->isAuthor($user, $post);
     }
@@ -71,7 +72,7 @@ class PostPolicy
      * @param \App\Model\Entity\Post $post
      * @return bool
      */
-    public function canView(IdentityInterface $user, Post $post)
+    public function canView(IdentityInterface $user, Post $post): bool
     {
         return true;
     }

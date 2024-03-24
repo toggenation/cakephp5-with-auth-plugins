@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Model\Entity;
@@ -45,7 +44,7 @@ class User extends Entity
      */
     protected array $_hidden = [
         'password',
-        'token'
+        'token',
     ];
 
     protected function _setPassword(string $password): ?string

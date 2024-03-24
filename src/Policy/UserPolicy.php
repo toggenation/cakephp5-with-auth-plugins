@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Policy;
@@ -19,6 +18,7 @@ class UserPolicy implements
     {
         return true;
     }
+
     /**
      * Check if $user can add User
      *
@@ -26,7 +26,7 @@ class UserPolicy implements
      * @param \App\Model\Entity\User $resource
      * @return bool
      */
-    public function canAdd(IdentityInterface $user, User $resource)
+    public function canAdd(IdentityInterface $user, User $resource): bool
     {
     }
 
@@ -37,7 +37,7 @@ class UserPolicy implements
      * @param \App\Model\Entity\User $resource
      * @return bool
      */
-    public function canEdit(IdentityInterface $user, User $resource)
+    public function canEdit(IdentityInterface $user, User $resource): bool
     {
     }
 
@@ -48,7 +48,7 @@ class UserPolicy implements
      * @param \App\Model\Entity\User $resource
      * @return bool
      */
-    public function canDelete(IdentityInterface $user, User $resource)
+    public function canDelete(IdentityInterface $user, User $resource): bool
     {
     }
 
@@ -59,7 +59,7 @@ class UserPolicy implements
      * @param \App\Model\Entity\User $resource
      * @return bool
      */
-    public function canView(IdentityInterface $user, User $resource)
+    public function canView(IdentityInterface $user, User $resource): bool
     {
     }
 }

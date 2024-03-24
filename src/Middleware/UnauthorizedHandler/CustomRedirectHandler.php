@@ -1,12 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Middleware\UnauthorizedHandler;
 
 use Authorization\Exception\Exception;
 use Authorization\Middleware\UnauthorizedHandler\CakeRedirectHandler;
-use Authorization\Middleware\UnauthorizedHandler\RedirectHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -21,7 +19,7 @@ class CustomRedirectHandler extends CakeRedirectHandler
 
         $request->getFlash()->set('You are not authorized to access the location: ', [
             'element' => 'denied',
-            'params' => ['redirected_from' => $request->getRequestTarget()]
+            'params' => ['redirected_from' => $request->getRequestTarget()],
         ]);
 
         return $response;

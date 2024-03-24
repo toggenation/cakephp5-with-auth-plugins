@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -16,7 +15,6 @@ use Cake\Validation\Validator;
  * Users Model
  *
  * @property \App\Model\Table\PostsTable&\Cake\ORM\Association\HasMany $Posts
- *
  * @method \App\Model\Entity\User newEmptyEntity()
  * @method \App\Model\Entity\User newEntity(array $data, array $options = [])
  * @method array<\App\Model\Entity\User> newEntities(array $data, array $options = [])
@@ -30,17 +28,16 @@ use Cake\Validation\Validator;
  * @method iterable<\App\Model\Entity\User>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\User> saveManyOrFail(iterable $entities, array $options = [])
  * @method iterable<\App\Model\Entity\User>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\User>|false deleteMany(iterable $entities, array $options = [])
  * @method iterable<\App\Model\Entity\User>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\User> deleteManyOrFail(iterable $entities, array $options = [])
- *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class UsersTable extends Table
 {
-
     public function findToken(SelectQuery $query): SelectQuery
     {
         return $query->where(['token_active' => true])
             ->whereNotNull(['token']);
     }
+
     /**
      * Initialize method
      *
@@ -66,7 +63,7 @@ class UsersTable extends Table
         EventInterface $event,
         EntityInterface $entity,
         ArrayObject $options
-    ) {
+    ): void {
         if ($entity->hasValue('new_password')) {
             $entity->password = $entity->new_password;
 

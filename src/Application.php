@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -19,24 +18,11 @@ declare(strict_types=1);
 namespace App;
 
 use App\Middleware\UnauthorizedHandler\CustomRedirectHandler;
-use Cake\Core\Configure;
-use Cake\Core\ContainerInterface;
-use Cake\Datasource\FactoryLocator;
-use Cake\Error\Middleware\ErrorHandlerMiddleware;
-use Cake\Http\BaseApplication;
-use Cake\Http\Middleware\BodyParserMiddleware;
-use Cake\Http\Middleware\CsrfProtectionMiddleware;
-use Cake\Http\MiddlewareQueue;
-use Cake\ORM\Locator\TableLocator;
-use Cake\Routing\Middleware\AssetMiddleware;
-use Cake\Routing\Middleware\RoutingMiddleware;
 // In src/Application.php add the following imports
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
-use Cake\Routing\Router;
-use Psr\Http\Message\ServerRequestInterface;
 use Authorization\AuthorizationService;
 use Authorization\AuthorizationServiceInterface;
 use Authorization\AuthorizationServiceProviderInterface;
@@ -44,9 +30,22 @@ use Authorization\Exception\ForbiddenException;
 use Authorization\Exception\MissingIdentityException;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Policy\OrmResolver;
+use Cake\Core\Configure;
+use Cake\Core\ContainerInterface;
+use Cake\Datasource\FactoryLocator;
+use Cake\Error\Middleware\ErrorHandlerMiddleware;
+use Cake\Http\BaseApplication;
+use Cake\Http\Middleware\BodyParserMiddleware;
+use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\Middleware\EncryptedCookieMiddleware;
+use Cake\Http\MiddlewareQueue;
 use Cake\Http\ServerRequest;
 use Cake\I18n\Middleware\LocaleSelectorMiddleware;
+use Cake\ORM\Locator\TableLocator;
+use Cake\Routing\Middleware\AssetMiddleware;
+use Cake\Routing\Middleware\RoutingMiddleware;
+use Cake\Routing\Router;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Application setup class.
@@ -56,8 +55,7 @@ use Cake\I18n\Middleware\LocaleSelectorMiddleware;
  *
  * @extends \Cake\Http\BaseApplication<\App\Application>
  */
-class Application extends BaseApplication
-implements
+class Application extends BaseApplication implements
     AuthenticationServiceProviderInterface,
     AuthorizationServiceProviderInterface
 {
@@ -121,7 +119,7 @@ implements
         // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
         $middlewareQueue->add(new BodyParserMiddleware())
             ->add(new AuthenticationMiddleware($this))
-            ->add(new AuthorizationMiddleware($this,   [
+            ->add(new AuthorizationMiddleware($this, [
                 'unauthorizedHandler' => [
                     'className' => CustomRedirectHandler::class,
                     'url' => ['controller' => 'Posts', 'action' => 'unauth'],
@@ -132,7 +130,6 @@ implements
                     ],
                 ],
             ]));
-
 
         $csrf = new CsrfProtectionMiddleware([
             'httponly' => true,
@@ -193,13 +190,13 @@ implements
                     'userModel' => 'Users',
                     'finder' => 'token', // default: 'all'
                 ],
-                'hashAlgorithm' => 'sha256'
+                'hashAlgorithm' => 'sha256',
             ]);
 
             $authenticationService->loadAuthenticator('Authentication.Token', [
                 'queryParam' => 'token',
                 'header' => 'Authorization',
-                'tokenPrefix' => 'Token'
+                'tokenPrefix' => 'Token',
             ]);
         } else {
             // Load identifiers, ensure we check email and password fields
