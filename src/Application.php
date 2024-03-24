@@ -105,27 +105,33 @@ implements
             // See https://github.com/CakeDC/cakephp-cached-routing
             ->add(new RoutingMiddleware($this))
             // Add middleware and set the valid locales
-            ->add(new LocaleSelectorMiddleware(['en_US', 'en_AU']));
-        // To accept any locale header value
-        //  $middlewareQueue->add(new LocaleSelectorMiddleware(['*']));
+            ->add(new LocaleSelectorMiddleware(
+                Configure::read('supportedLocales')
+            ));
 
+        $cookies = new EncryptedCookieMiddleware(
+            // Names of cookies to protect
+            Configure::read('Security.encryptedCookies'),
+            Configure::read('Security.cookieKey')
+        );
 
-
-
+        $middlewareQueue->add($cookies);
         // Parse various types of encoded request bodies so that they are
         // available as array through $request->getData()
         // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
         $middlewareQueue->add(new BodyParserMiddleware())
             ->add(new AuthenticationMiddleware($this))
-            ->add(new AuthorizationMiddleware($this,   ['unauthorizedHandler' => [
-                'className' => CustomRedirectHandler::class,
-                'url' => ['controller' => 'Posts', 'action' => 'unauth'],
-                'queryParam' => 'redirectUrl',
-                'exceptions' => [
-                    MissingIdentityException::class,
-                    ForbiddenException::class,
+            ->add(new AuthorizationMiddleware($this,   [
+                'unauthorizedHandler' => [
+                    'className' => CustomRedirectHandler::class,
+                    'url' => ['controller' => 'Posts', 'action' => 'unauth'],
+                    'queryParam' => 'redirectUrl',
+                    'exceptions' => [
+                        MissingIdentityException::class,
+                        ForbiddenException::class,
+                    ],
                 ],
-            ],]));
+            ]));
 
 
         $csrf = new CsrfProtectionMiddleware([

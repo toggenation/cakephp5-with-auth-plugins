@@ -24,6 +24,11 @@ class PostPolicy
         return true;
     }
 
+    public function canCookie(IdentityInterface $user, Post $post)
+    {
+        return true;
+    }
+
     public function canTestRedirect(IdentityInterface $user, Post $post)
     {
         return false;

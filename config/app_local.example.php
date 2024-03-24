@@ -27,12 +27,13 @@ return [
     'Security' => [
         'salt' => env('SECURITY_SALT', '__SALT__'),
         // after running composer install
-        // remove the slashes and then execute
+        // remove the \'s from SALT and 
         // composer run post-install-cmd
-        'cookieKey' => '\_\_SALT\_\_',
+        'cookieKey' => env('COOKIE_KEY', '\_\_SALT\_\_'),,
         'encryptedCookies' => ['form'],
     ],
-
+    // locale Switcher middleware
+    'supportedLocales' => ['en_US', 'en_AU'],
     /*
      * Connection information used by the ORM to connect
      * to your application's datastores.

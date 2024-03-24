@@ -45,6 +45,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
         </div>
         <div class="top-nav-links">
+            <?= $this->Html->link('Cookie', ['controller' => 'Posts', 'action' => 'cookie']); ?>
             <?= $this->getRequest()->getAttribute('identity') ?
                 "Logged in as: " . $this->getRequest()->getAttribute('identity')
                     ->getOriginalData()['email'] :

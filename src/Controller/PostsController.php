@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Chronos\Chronos;
+use App\Model\Entity\Post;
+use Cake\Form\Form;
 use Cake\Http\Cookie\Cookie;
+use stdClass;
 
 /**
  * Posts Controller
@@ -165,5 +167,35 @@ class PostsController extends AppController
 
     public function unauth()
     {
+    }
+
+    public function cookie()
+    {
+        $this->Authorization->authorize($this->Posts->newEmptyEntity());
+
+        if ($this->request->is("POST")) {
+
+            $data = $this->request->getData();
+
+            $cookie = new Cookie('form', $data);
+
+            if ($data['clear']) {
+                $this->setResponse($this->getResponse()->withExpiredCookie($cookie));
+            } else {
+                $this->setResponse($this->getResponse()->withCookie($cookie));
+            }
+
+            return $this->redirect(['action' => 'cookie']);
+        }
+
+        $formValues = [];
+
+        if ($this->getRequest()->getCookieCollection()->has('form')) {
+            $formValues = $this->getRequest()->getCookieCollection()->get('form')->getValue();
+        }
+
+        $form = (new Form())->setData($formValues);
+
+        $this->set('form', $form);
     }
 }
