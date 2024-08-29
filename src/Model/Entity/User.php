@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Entity;
@@ -13,6 +14,7 @@ use Cake\Utility\Security;
  * @property int $id
  * @property string $email
  * @property string $password
+ * @property string $username Username for this user
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime $modified
  *
@@ -35,6 +37,7 @@ class User extends Entity
         'created' => true,
         'modified' => true,
         'posts' => true,
+        'username' => true,
     ];
 
     /**

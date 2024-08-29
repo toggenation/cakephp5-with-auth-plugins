@@ -24,6 +24,7 @@
                 <legend><?= __('Edit User') ?></legend>
                 <?php
                 echo $this->Form->control('email');
+                echo $this->Form->control('username');
                 echo $this->Form->control('new_password');
                 echo $this->Form->control('new_token');
                 echo $this->Form->control('token_active');

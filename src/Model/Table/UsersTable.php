@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -86,7 +87,7 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->email('email')
+            // ->email('email')
             ->requirePresence('email', 'create')
             ->notEmptyString('email');
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -17,6 +18,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Identifier\Resolver\CaseInsensitiveOrmResolver;
 use App\Middleware\UnauthorizedHandler\CustomRedirectHandler;
 // In src/Application.php add the following imports
 use Authentication\AuthenticationService;
@@ -167,9 +169,7 @@ class Application extends BaseApplication implements
      * @return void
      * @link https://book.cakephp.org/4/en/development/dependency-injection.html#dependency-injection
      */
-    public function services(ContainerInterface $container): void
-    {
-    }
+    public function services(ContainerInterface $container): void {}
 
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
@@ -177,6 +177,8 @@ class Application extends BaseApplication implements
             'unauthenticatedRedirect' => Router::url('/users/login'),
             'queryParam' => 'redirect',
         ]);
+
+
 
         /**
          * @var \Cake\Http\ServerRequest $request
@@ -200,12 +202,18 @@ class Application extends BaseApplication implements
             ]);
         } else {
             // Load identifiers, ensure we check email and password fields
+            /**
+             * @var \Authentication\Identifier\PasswordIdentifier 
+             */
             $authenticationService->loadIdentifier('Authentication.Password', [
                 'fields' => [
-                    'username' => 'email',
+                    'username' => ['email', 'username'],
                     'password' => 'password',
                 ],
+                'resolver' => CaseInsensitiveOrmResolver::class,
             ]);
+
+            // $identifier->setResolver(new CaseInsensitiveOrmResolver());
 
             // Load the authenticators, you want session first
             $authenticationService->loadAuthenticator('Authentication.Session');
