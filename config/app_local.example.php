@@ -29,7 +29,7 @@ return [
         // after running composer install
         // remove the \'s from SALT and 
         // composer run post-install-cmd
-        'cookieKey' => env('COOKIE_KEY', '\_\_SALT\_\_'),
+        'cookieKey' => env('COOKIE_KEY', '__COOKIE_SALT__'),
         'encryptedCookies' => ['form'],
     ],
     // locale Switcher middleware
