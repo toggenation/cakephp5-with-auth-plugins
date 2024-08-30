@@ -210,7 +210,7 @@ class Application extends BaseApplication implements
                     'username' => ['email', 'username'],
                     'password' => 'password',
                 ],
-                'resolver' => CaseInsensitiveOrmResolver::class,
+                'resolver' => CaseInsensitiveOrmResolver::class
             ]);
 
             // $identifier->setResolver(new CaseInsensitiveOrmResolver());
@@ -220,7 +220,7 @@ class Application extends BaseApplication implements
             // Configure form data check to pick email and password
             $authenticationService->loadAuthenticator('Authentication.Form', [
                 'fields' => [
-                    'username' => 'email',
+                    'username' => 'emailOrUsername',
                     'password' => 'password',
                 ],
                 'loginUrl' => Router::url('/users/login'),

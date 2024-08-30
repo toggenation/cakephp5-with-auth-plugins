@@ -5,7 +5,7 @@
     <?= $this->Form->create() ?>
     <fieldset>
         <legend><?= __('Please enter your username and password') ?></legend>
-        <?= $this->Form->control('email', [
+        <?= $this->Form->control('emailOrUsername', [
             'type' => 'text',
             'required' => true
         ]) ?>

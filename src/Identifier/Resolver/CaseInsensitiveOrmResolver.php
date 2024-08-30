@@ -7,6 +7,9 @@ use Authentication\Identifier\Resolver\OrmResolver;
 
 class CaseInsensitiveOrmResolver extends OrmResolver
 {
+    /**
+     * @inheritDoc
+     */
     public function find(array $conditions, string $type = self::TYPE_AND): ArrayAccess|array|null
     {
         $table = $this->getTableLocator()->get($this->_config['userModel']);
@@ -27,9 +30,14 @@ class CaseInsensitiveOrmResolver extends OrmResolver
             if (is_array($value)) {
                 $field = $field . ' IN';
             }
-            $where[$field . ' LIKE'] = $value;
+            $where['LOWER(' . $field . ')'] = strtolower($value);
         }
-        // dd($query->where([$type => $where])->__toString());
+
+        // dd([
+        //     $where,
+        //     $query->where([$type => $where])->__toString()
+        // ]);
+
         return $query->where([$type => $where])->first();
     }
 }
