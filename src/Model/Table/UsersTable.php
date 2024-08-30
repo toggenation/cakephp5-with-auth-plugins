@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -32,12 +33,6 @@ use Cake\Validation\Validator;
  */
 class UsersTable extends Table
 {
-    public function findToken(SelectQuery $query): SelectQuery
-    {
-        return $query->where(['token_active' => true])
-            ->whereNotNull(['token']);
-    }
-
     /**
      * Initialize method
      *
@@ -75,6 +70,12 @@ class UsersTable extends Table
 
             unset($entity['new_token']);
         }
+    }
+
+    public function findToken(SelectQuery $query): SelectQuery
+    {
+        return $query->where(['token_active' => true])
+            ->whereNotNull(['token']);
     }
 
     /**

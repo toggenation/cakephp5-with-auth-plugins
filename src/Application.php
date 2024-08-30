@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -17,6 +18,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Identifier\Resolver\CaseInsensitiveOrmResolver;
 use App\Middleware\UnauthorizedHandler\CustomRedirectHandler;
 // In src/Application.php add the following imports
 use Authentication\AuthenticationService;
@@ -167,9 +169,7 @@ class Application extends BaseApplication implements
      * @return void
      * @link https://book.cakephp.org/4/en/development/dependency-injection.html#dependency-injection
      */
-    public function services(ContainerInterface $container): void
-    {
-    }
+    public function services(ContainerInterface $container): void {}
 
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
@@ -202,9 +202,10 @@ class Application extends BaseApplication implements
             // Load identifiers, ensure we check email and password fields
             $authenticationService->loadIdentifier('Authentication.Password', [
                 'fields' => [
-                    'username' => 'email',
+                    'username' => ['email', 'username'],
                     'password' => 'password',
                 ],
+                'resolver' => CaseInsensitiveOrmResolver::class
             ]);
 
             // Load the authenticators, you want session first
@@ -212,7 +213,7 @@ class Application extends BaseApplication implements
             // Configure form data check to pick email and password
             $authenticationService->loadAuthenticator('Authentication.Form', [
                 'fields' => [
-                    'username' => 'email',
+                    'username' => 'emailOrUsername',
                     'password' => 'password',
                 ],
                 'loginUrl' => Router::url('/users/login'),
