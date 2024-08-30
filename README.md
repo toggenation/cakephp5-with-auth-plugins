@@ -11,10 +11,11 @@ https://book.cakephp.org/5/en/tutorials-and-examples/cms/installation.html
 - Migrations and Seeds to create posts and users table schema
 - Policy files and use of the `BeforePolicyInterface` (see src/Policy/UserPolicy.php)
 - Posts & Users Table (Not Articles and Tags tables)
-- Example of POST and GET Ajax request using Token Authentication http://localhost:8765/posts/ajax using a token stored hashed in the database. 
+- Example of POST and GET Ajax request using Token Authentication http://localhost:8765/posts/ajax using a token stored hashed in the database.
 - Async ajax `fetch` code in `webroot/js/ajax.js`
 - View `src/Application.php` for example to bypass CSRF Middleware code for clients that send POST with no prior GET request
 - Example of `CustomRedirectHandler` http://localhost:8765/posts/test-redirect
+- Custom Case-Insensitive Resolvers to allow User or Email to be entered in any case and still resolve to the correct user.
 
 ## Test Ajax Endpoint Using Curl
 Use curl to test POST
