@@ -16,6 +16,20 @@ https://book.cakephp.org/5/en/tutorials-and-examples/cms/installation.html
 - View `src/Application.php` for example to bypass CSRF Middleware code for clients that send POST with no prior GET request
 - Example of `CustomRedirectHandler` http://localhost:8765/posts/test-redirect
 - Custom Case-Insensitive Resolvers to allow User or Email to be entered in any case and still resolve to the correct user.
+- Example of running a custom `composer.json` class
+
+## Custom composer.json
+
+The \App\Console\Installer class has been copied and modified to a find and replace of __COOKIE_SALT__ to provide a salt for the Cookie hash algorithm. `App\Console\CookieSaltInstaller::postInstall` is run after `composer install` 
+
+See config/app_local.php and `Security.cookieKey` 
+
+```json
+  "post-install-cmd": [
+            "App\\Console\\Installer::postInstall",
+            "App\\Console\\CookieSaltInstaller::postInstall"
+        ],
+```
 
 ## Test Ajax Endpoint Using Curl
 Use curl to test POST
